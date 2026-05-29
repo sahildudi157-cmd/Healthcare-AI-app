@@ -131,10 +131,10 @@ st.markdown("""
 # ============================================================
 # GROQ API KEY
 # ============================================================
-# try:
-#     GROQ_API_KEY = os.getenv("GROQ_API_KEY") or st.secrets.get("GROQ_API_KEY", "")
-# except:
-GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
+import os
+GROQ_API_KEY = os.getenv("GROQ_API_KEY") 
+if not GROQ_API_KEY: 
+    GROQ_API_KEY =st.secrets.get("GROQ_API_KEY", "")
 
 # ============================================================
 # SYSTEM PROMPT
