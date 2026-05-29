@@ -219,7 +219,7 @@ def get_ai_response(user_message: str) -> tuple:
 
         except Exception as e:
             st.error(f"Groq Error: {str(e)}")
-            return f"Error: {str(e)}"
+            return f"Error: {str(e)}", False
 
         st.session_state.groq_history.append({"role": "user", "content": user_message})
         st.session_state.groq_history.append({"role": "assistant", "content": reply})
