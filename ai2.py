@@ -134,7 +134,7 @@ st.markdown("""
 import os
 GROQ_API_KEY = os.getenv("GROQ_API_KEY") 
 if not GROQ_API_KEY: 
-    GROQ_API_KEY =st.secrets.get("GROQ_API_KEY", "")
+    GROQ_API_KEY =st.secrets.get["GROQ_API_KEY"]
 
 # ============================================================
 # SYSTEM PROMPT
@@ -207,13 +207,19 @@ def get_ai_response(user_message: str) -> tuple:
             messages.append(msg)
         messages.append({"role": "user", "content": user_message})
 
-        response = client.chat.completions.create(
+        try:
+            response = client.chat.completions.create(
             model="llama-3.3-70b-versatile",
             messages=messages,
             max_tokens=300,
             temperature=0.7
         )
-        reply = response.choices[0].message.content
+
+            reply = response.choices[0].message.content
+
+        except Exception as e:
+            st.error(f"Groq Error: {str(e)}")
+            return f"Error: {str(e)}"
 
         st.session_state.groq_history.append({"role": "user", "content": user_message})
         st.session_state.groq_history.append({"role": "assistant", "content": reply})
